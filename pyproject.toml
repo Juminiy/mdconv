@@ -24,3 +24,7 @@ packages = ['conv', 'lang', 'pyatt']
 exclude = [
     ".venv"
 ]
+
+[project.urls]
+Homepage = "https://github.com/Juminiy/mdconv"
+Issues = "https://github.com/Juminiy/mdconv/issues"
