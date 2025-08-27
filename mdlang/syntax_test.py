@@ -1,4 +1,4 @@
-from lang.syntax import Sheet
+from mdlang.syntax import Sheet
 
 if __name__ == '__main__':
     with open('data/md/pass_test.md', 'w+') as testmd:

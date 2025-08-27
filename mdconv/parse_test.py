@@ -1,4 +1,4 @@
-from conv.parse import json2md
+from mdconv.parse import json2md
 from json import loads
 
 if __name__=='__main__':

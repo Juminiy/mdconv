@@ -1,4 +1,4 @@
-from lang.syntax import mdtype,Sheet
+from mdlang.syntax import mdtype,Sheet
 
 from typing import Any
 

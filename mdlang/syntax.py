@@ -242,11 +242,11 @@ class Sheet():
         rowcnt=len(self.sheet) + (1 if self.rowhdr else 0)
         linecnt=max([len(row) for row in self.sheet]) + (1 if self.linehdr else 0)
         if self.rowhdr:
-            grid.append(([self.cell00]+self.rowhdr) if self.cell00 != None else self.rowhdr)
+            grid.append(([self.cell00]+self.rowhdr) if self.cell00 != None and self.linehdr else self.rowhdr)
         for rowidx, row in enumerate(self.sheet):
             grid.append(([self.linehdr[rowidx]]+row) if self.linehdr else row)
         grid.insert(1, ['-']*(linecnt))
-
+        
         linecell_maxsz=[0]*linecnt
         for j in range(linecnt):
             for i in range(rowcnt):
@@ -260,7 +260,7 @@ class Sheet():
                 resv+= (f'{cell:{alignchar}{linecell_maxsz[j]}}')+(' | ' if j<linecnt-1 else '')
             restable.append(f'| {resv} |')
         return '\n'.join(restable)
-    
+
     def __repr__(self) -> str:
         return str(self)
 
