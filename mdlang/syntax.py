@@ -65,8 +65,9 @@ def Code(word:str) -> str:
 
 # Links, Relative links
 def Href(word:str, url:str):
-    # Markdown f'[{word}]({url})'
     return f'<a href="{url}">{word}</a>'
+def Href_plain(word:str,url:str):
+    return f'[{word}]({url})'
 def Image(word:str, url:str):
     return f'![{word}]({url})'
 def URL_or_Email(word:str) -> str:
@@ -75,6 +76,8 @@ def format_word(word:str, pair:tuple[str,str]) -> str:
     if len(word)==0:
         return word
     return f'{pair[0]}{word}{pair[1]}' if not (word.startswith(pair[0]) and word.endswith(pair[1])) else word
+def LinkedImage(image_desc:str,image_url:str,link_url:str) -> str:
+    return Href_plain(Image(image_desc, image_url), link_url)
 
 # Section links (current markdown page)
 # Custom anchors
@@ -353,4 +356,5 @@ mdtype:dict[str, Callable]={
     'SectionLink': SectionLink, 'CustomAnchors': SectionLink,
     'Footnotes_ref': Footnotes_ref,
     'Footnotes_def': Footnotes_def,
+    'LinkedImage': LinkedImage,
 }
