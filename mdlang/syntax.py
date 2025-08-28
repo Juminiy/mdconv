@@ -64,7 +64,7 @@ def Code(word:str) -> str:
     return format_word(word, ('`','`'))
 
 # Links, Relative links
-def Href(word:str, url:str):
+def Href_html(word:str, url:str):
     return f'<a href="{url}">{word}</a>'
 def Href_plain(word:str,url:str):
     return f'[{word}]({url})'
@@ -271,39 +271,47 @@ class Sheet():
         self.sheet.insert(rowidx, rowadd)
         return self
     
-    def insert_row_below(self, rowidx:int, rowadd:list[str]) -> Self:
-        if rowidx < len(self.sheet)-1:
-            self.sheet.insert(rowidx+1, rowadd)
-        elif rowidx == len(self.sheet)-1:
-            self.sheet.append(rowadd)
-        return self
+    # def insert_row_below(self, rowidx:int, rowadd:list[str]) -> Self:
+    #     stsz=len(self.sheet)
+    #     if stsz==0:
+    #         self.sheet.append(rowadd)
+    #         return self
+        
+    #     rowidx = (stsz+rowidx)%stsz
+    #     if 0 <= rowidx < stsz-1:
+    #         self.sheet.insert(rowidx+1, rowadd)
+    #     elif rowidx == stsz-1:
+    #         self.sheet.append(rowadd)
+    #     else:
+    #         raise IndexError()
+    #     return self
     
-    def insert_line_left(self, lineidx:int, lineadd:list[str]) -> Self:
-        return self
+    # def insert_line_left(self, lineidx:int, lineadd:list[str]) -> Self:
+    #     return self
     
-    def insert_line_right(self, lineidx:int, lineadd:list[str]) -> Self:
-        return self
+    # def insert_line_right(self, lineidx:int, lineadd:list[str]) -> Self:
+    #     return self
     
-    def move_row_above(self, rowidx:int, cnt:int=1) -> Self:
-        return self
+    # def move_row_above(self, rowidx:int, cnt:int=1) -> Self:
+    #     return self
     
-    def move_row_below(self, rowidx:int, cnt:int=1) -> Self:
-        return self
+    # def move_row_below(self, rowidx:int, cnt:int=1) -> Self:
+    #     return self
     
-    def move_line_left(self, lineidx:int, cnt:int=1) -> Self:
-        return self
+    # def move_line_left(self, lineidx:int, cnt:int=1) -> Self:
+    #     return self
     
-    def move_line_right(self, lineidx:int, cnt:int=1) -> Self:
-        return self
+    # def move_line_right(self, lineidx:int, cnt:int=1) -> Self:
+    #     return self
     
     def del_row(self, rowidx:int) -> Self:
         self.sheet.pop(rowidx)
         return self
     
-    def del_line(self, lineidx:int) -> Self:
-        for row in self.sheet:
-            row.pop(lineidx)
-        return self
+    # def del_line(self, lineidx:int) -> Self:
+    #     for row in self.sheet:
+    #         row.pop(lineidx)
+    #     return self
     
     def copy(self) -> 'Sheet':
         return Sheet(
@@ -348,7 +356,7 @@ mdtype:dict[str, Callable]={
     'Code': Code,
     'DeleteLine': Strikethrough, 'Strikethrough': Strikethrough,
     'Comment': Comment,
-    'Href': Href,
+    'Href': Href_plain,
     'Image': Image,
     'URL': URL_or_Email, 'Email': URL_or_Email,
     'Subscript': Subscript, 

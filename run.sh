@@ -13,6 +13,9 @@ case "$1" in
     echo "$1 arg need: setenv, pypipub, gitpush"
     exit 1
     ;;
+"clear")
+    clear_env
+    ;;
 "setenv")
     clear_env
     uv venv
@@ -21,12 +24,12 @@ case "$1" in
     ;;
 "pypipub")
     clear_env
-    if [ "$PYPI_CHISATO_TOKEN" == "" ]; then
-        echo "env: 'PYPI_CHISATO_TOKEN' not found"
+    if [ "$PYPI_TOKEN" == "" ]; then
+        echo "env: 'PYPI_TOKEN' not found"
         exit 1
     fi
     uv build
-    uv publish --token $PYPI_CHISATO_TOKEN
+    uv publish --token $PYPI_TOKEN
     ;;
 "gitpush")
     git add .

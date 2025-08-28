@@ -1,7 +1,7 @@
 from mdlang.syntax import Sheet
 
 if __name__ == '__main__':
-    with open('data/md/pass_test.md', 'w+') as testmd:
+    with open('data/md/gen/pass_test.md', 'w+') as testmd:
         testmd.write(
             Sheet(
                 sheet=[

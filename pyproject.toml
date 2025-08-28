@@ -1,6 +1,6 @@
 [project]
 name = "mdconv"
-version = "0.1.2"
+version = "0.1.3"
 description = "[MDCONV](http://github.com/Juminiy/mdconv) is markdown to [json, ppt, docx, txt] converter"
 authors=[
     { name = "Juminiy", email = "chisato-x@bupt.edu.cn" }
