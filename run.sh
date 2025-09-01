@@ -1,7 +1,7 @@
 #!/bin/bash
 
 clear_env() {
-    for ldir in "dist" "mdconv.egg-info" ".venv" "mdconv/__pycache__" "mdlang/__pycache__" "pychar/__pycache__"
+    for ldir in "dist" "mdconv.egg-info" ".venv" "mdconv/__pycache__" "mdlang/__pycache__" "pychar/__pycache__" "pyutils/__pycache__"
     do
         rm -rf $ldir
     done

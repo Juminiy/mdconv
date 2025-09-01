@@ -9,6 +9,9 @@ license = { file = "LICENSE" }
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "matplotlib>=3.10.6",
+    "numpy>=2.3.2",
+    "scikit-learn>=1.7.1",
     "typing-extensions>=4.15.0",
 ]
 
@@ -18,7 +21,7 @@ full = [
 ]
 
 [tool.setuptools]
-packages = ['mdconv', 'mdlang', 'pychar']
+packages = ['mdconv', 'mdlang', 'pychar', 'pyutils']
 
 [tool.ruff]
 exclude = [
