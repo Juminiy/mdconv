@@ -7,6 +7,12 @@ from pyutils import (
 import datetime
 from typing import Any
 from typing_extensions import Self
+from dateutil.relativedelta import relativedelta
+from typing import TypeVar, Generic
+from math import sqrt
+
+_Tp_S = TypeVar('_Tp_S', str,bytes,bytearray)
+_Tp_I = TypeVar('_Tp_I', int,float)
 
 class Doctor(BaseType):
     name:str
@@ -43,8 +49,10 @@ class Doctor(BaseType):
         self.birth=min(self.birth,other.birth)
         return self
 
-    def age(self) -> int:
-        return datetimenow().year-self.birth.year
+    def age(self) -> float:
+        curtime=datetimenow()
+        deltatime=relativedelta(curtime, self.birth)
+        return round(deltatime.years + deltatime.months/12 + deltatime.days/365.2425, 1)
 
     def __getitem__(self, key:str) -> Any:
         match key:
@@ -76,6 +84,15 @@ class Doctor(BaseType):
             case _:
                 pass
     
+    def __getattr__(self, name: str) -> Any:
+        match name:
+            case 'age_ch':
+                return self.age()+1
+            case 'age_ut':
+                return self.age()
+            case _:
+                return None
+
     def __abs__(self) -> str:
         return str(self)
     
@@ -86,12 +103,26 @@ class Doctor(BaseType):
     @staticmethod
     def some_add(a,b:int) -> int:
         return a+b
+    
+    def __call__(self, s:str):
+        self.desc=s
 
-if __name__=='__main__':
+    def copy(self) -> 'Doctor':
+        return Doctor(
+            name=self.name,
+            sex=self.sex,
+            birth=self.birth,
+            desc=self.desc,
+            family=self.family.copy(),
+            mates=self.mates.copy(),
+            children=self.children.copy(),
+        )
+
+def test_Doctor():
     dct=Doctor(
         name='Hachimi',
         sex=False,
-        desc='哈基米要怎样',
+        desc='哈基米南北绿豆',
         family=[],
         mates=[],
         children={},
@@ -105,8 +136,66 @@ if __name__=='__main__':
     write_obj2file(dct, 'data/test/doctor')
 
     # decode json to obj
-    dct2=Doctor(**{'name':'hachi', 'sex': False, 'birth': datetime.datetime(2001,11,22)})
+    dct2=Doctor(**{'name':'hachi', 'sex': False, 'birth': datetime.datetime(2000,12,2)})
     print(dct2['age'])
-    dc1={}
-    dct3=Doctor(**dc1)
-    print(dct3)
+    dct3=dct2.copy()
+    print(dct3.desc)
+    dct3('hachimi')
+    print(dct3.desc)
+
+    print(dct3.age_ch)
+    print(dct3.age_utc)
+
+class PointT(Generic[_Tp_I]):
+    x:_Tp_I
+    y:_Tp_I
+    z:_Tp_I
+
+    def __init__(self,x:_Tp_I,y:_Tp_I,z:_Tp_I) -> None:
+        self.x=x
+        self.y=y
+        self.z=z
+
+    def __add__(self, other:'PointT') -> 'PointT':
+        return PointT(
+            self.x+other.x,
+            self.y+other.y,
+            self.z+other.z,
+        )
+
+    def __sub__(self, other:'PointT') -> 'PointT':
+        return PointT(
+            self.x-other.x,
+            self.y-other.y,
+            self.z-other.z,
+        )
+    
+    def __mul__(self, other:'PointT') -> int:
+        return self.x*other.x+self.y*other.y+self.z*other.z
+
+    def __abs__(self) -> float:
+        return sqrt(pow(self.x,2)+pow(self.y,2)+pow(self.z,2))
+
+    def __index__(self) -> int:
+        return int(abs(self))
+    
+    def __float__(self) -> float:
+        return abs(self)
+    
+    def __str__(self) -> str:
+        return f'PointT({self.x},{self.y},{self.z})'
+
+    def __repr__(self) -> str:
+        return str(self)
+
+def test_Point():
+    p1,p2=PointT(1,2,3),PointT(1.1,2.2,3.3)
+    print(p1,p2,sep=',')
+    print(p1+p2)
+    print(p1-p2)
+    print(p1*p2)
+    print(int(p1)*int(p2))
+    print(float(p1)*float(p2))
+
+if __name__=='__main__':
+    test_Point()

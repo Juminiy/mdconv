@@ -1,5 +1,6 @@
 from pyutils.class_test import Doctor
 from datetime import datetime
+from pyutils import datetimenow, datenow, timenow, datetimestr
 
 if __name__=='__main__':
     # builtin abs
@@ -32,3 +33,7 @@ if __name__=='__main__':
     print(tuple(zip([x for x in range(1,10,2)], ['mos','cat','job'])))
     print(dict(zip([x for x in range(1,10,2)], ['mos','cat','job'])))
     print(list(enumerate(['mos','cat','job'])))
+
+    # s2b
+    print('\r\n{"key":"value"}\r\n["rough",{"haji":666}]\r\n'.encode('utf-8'))
+    print(datetimestr(datetimenow()),datetimestr(datenow()),datetimestr(timenow()), sep='\n')

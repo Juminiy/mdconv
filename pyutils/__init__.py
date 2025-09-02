@@ -1,4 +1,9 @@
-import json,enum,datetime
+from json import loads, dumps, JSONEncoder
+
+from datetime import datetime, date, time, timedelta
+
+from enum import Enum, IntEnum
+
 from typing import Any
 
 # JSON
@@ -31,19 +36,19 @@ class BaseType:
 
         return _dict(self)
 
-class CustomJSONEncoder(json.JSONEncoder):
+class CustomJSONEncoder(JSONEncoder):
     def __init__(self, **kwargs):
         self._with_type = kwargs.pop("with_type", False)
         super().__init__(**kwargs)
 
     def default(self, obj):
-        if isinstance(obj, datetime.datetime):
+        if isinstance(obj, datetime):
             return obj.strftime('%Y-%m-%d %H:%M:%S')
-        elif isinstance(obj, datetime.date):
+        elif isinstance(obj, date):
             return obj.strftime('%Y-%m-%d')
-        elif isinstance(obj, datetime.timedelta):
+        elif isinstance(obj, timedelta):
             return str(obj)
-        elif issubclass(type(obj), enum.Enum) or issubclass(type(obj), enum.IntEnum):
+        elif issubclass(type(obj), Enum) or issubclass(type(obj), IntEnum):
             return obj.value
         elif isinstance(obj, set):
             return list(obj)
@@ -55,10 +60,10 @@ class CustomJSONEncoder(json.JSONEncoder):
         elif isinstance(obj, type):
             return obj.__name__
         else:
-            return json.JSONEncoder.default(self, obj)
+            return JSONEncoder.default(self, obj)
 
 def write_obj2file(obj:Any, filename:str):
-    with open(filename_withext(filename,'json')) as jfile:
+    with open(filename_withext(filename,'json'), 'w+') as jfile:
         jfile.write(json_dumps(obj=obj, ensure_ascii=False, indent=4))
         jfile.close()
 
@@ -74,7 +79,7 @@ def filename_withext(filename:str,extname:str) -> str:
     else f'{filename}.{extname}'
 
 def json_dumps(obj:Any, **kw) -> str:
-    return json.dumps(
+    return dumps(
         obj=obj,
         skipkeys=kw.get('skipkeys', False),
         ensure_ascii=kw.get('ensure_ascii', True),
@@ -88,7 +93,7 @@ def json_dumps(obj:Any, **kw) -> str:
     )
 
 def json_loads(s:str|bytes|bytearray, **kw) -> Any:
-    return json.loads(
+    return loads(
         s=s,
         cls=kw.get('cls', None),
         object_hook=kw.get('object_hook', None),
@@ -99,11 +104,22 @@ def json_loads(s:str|bytes|bytearray, **kw) -> Any:
     )
 
 # Time
-def datetimenow() -> datetime.datetime:
-    return datetime.datetime.now()
+__default_date_fmt__='%Y-%m-%d'
+__default_time_fmt__='%H:%M:%S'
+__default_datetime_fmt__='%Y-%m-%d %H:%M:%S'
+def datetimenow() -> datetime:
+    return datetime.now()
 
-def datenow() -> datetime.date:
+def datenow() -> date:
     return datetimenow().date()
 
-def timenow() -> datetime.time:
+def timenow() -> time:
     return datetimenow().time()
+
+def datetimestr(dt:datetime|date|time) -> str:
+    if isinstance(dt, datetime):
+        return dt.strftime(__default_datetime_fmt__)
+    elif isinstance(dt, date):
+        return dt.strftime(__default_date_fmt__)
+    elif isinstance(dt, time):
+        return dt.strftime(__default_time_fmt__)
