@@ -123,3 +123,13 @@ def datetimestr(dt:datetime|date|time) -> str:
         return dt.strftime(__default_date_fmt__)
     elif isinstance(dt, time):
         return dt.strftime(__default_time_fmt__)
+
+# container utils
+def merge_dict(dst:dict|None, src:dict|None) -> dict:
+    if dst==None:
+        dst={}
+    if src==None:
+        return dst
+    for srckey,srcval in src.items():
+        dst[srckey]=srcval
+    return dst
